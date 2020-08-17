@@ -9,8 +9,23 @@ use App\Domain\Tasks\TaskNotFoundException;
 use App\Domain\Tasks\TaskRepository;
 use App\Infrastructure\Persistence\MySqlBaseRepository;
 use PDOException;
+use PDOStatement;
 
 class MySqlTaskRepository extends MySqlBaseRepository implements TaskRepository {
+
+  /**
+   * @param PDOStatement $statement
+   * @throws PDOException
+   */
+  private function throwExceptionOnFailure(PDOStatement $statement) : void {
+    $errorInfo = $statement->errorInfo();
+
+    $sqlstateCode = $errorInfo[0];
+    $errorCode = $errorInfo[1];
+    $errorMessage = $errorInfo[2];
+
+    if($sqlstateCode !== '00000') throw new PDOException($errorMessage, $errorCode);
+  }
 
   /**
    * {@inheritdoc}
@@ -22,9 +37,9 @@ class MySqlTaskRepository extends MySqlBaseRepository implements TaskRepository 
     $statement->bindValue(':id', $task->id());
     $statement->bindValue(':description', $task->description());
     $statement->bindValue(':completed', $task->completed());
-    $success = $statement->execute();
+    $statement->execute();
 
-    if(!$success) throw new PDOException();
+    $this->throwExceptionOnFailure($statement);
 
     return $task;
   }
@@ -38,9 +53,9 @@ class MySqlTaskRepository extends MySqlBaseRepository implements TaskRepository 
     $db = $this->getConnection();
     $sql = 'select * from tasks';
     $statement = $db->prepare($sql);
-    $success = $statement->execute();
+    $statement->execute();
 
-    if(!$success) throw new PDOException();
+    $this->throwExceptionOnFailure($statement);
 
     $rows = $statement->fetchAll(PDO::FETCH_OBJ);
     foreach($rows as $obj) {
@@ -59,9 +74,9 @@ class MySqlTaskRepository extends MySqlBaseRepository implements TaskRepository 
     $sql = 'select * from tasks where id = :id';
     $statement = $db->prepare($sql);
     $statement->bindValue(':id', $id);
-    $success = $statement->execute();
+    $statement->execute();
 
-    if(!$success) throw new PDOException();
+    $this->throwExceptionOnFailure($statement);
 
     $storedTask = $statement->fetch(PDO::FETCH_OBJ);
 
@@ -86,9 +101,9 @@ class MySqlTaskRepository extends MySqlBaseRepository implements TaskRepository 
     $statement->bindValue(':id', $task->id());
     $statement->bindValue(':description', $task->description());
     $statement->bindValue(':completed', $task->completed());  
-    $success = $statement->execute();
+    $statement->execute();
 
-    if(!$success) throw new PDOException();
+    $this->throwExceptionOnFailure($statement);
 
     return $task;
   }
