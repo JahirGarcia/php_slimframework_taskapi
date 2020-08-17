@@ -24,7 +24,7 @@ abstract class MySqlRepository {
    * @return string
    */
   protected function connectionString() : string {
-    return $_ENV['MYSQL_DB_URI'];
+    return $_ENV['MYSQL_DB_DNS'];
   }
 
   /**
