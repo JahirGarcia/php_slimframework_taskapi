@@ -8,16 +8,6 @@ abstract class MySqlRepository {
   /**
    * @var string
    */
-  private $dbname;
-
-  /**
-   * @var string
-   */
-  private $host;
-
-  /**
-   * @var string
-   */
   private $user;
 
   /**
@@ -26,17 +16,15 @@ abstract class MySqlRepository {
   private $password;
 
   public function __construct() {
-    $this->dbname = 'taskapi';
-    $this->host = '127.0.0.1';
-    $this->user = 'root';
-    $this->password = '';
+    $this->user = $_ENV['MYSQL_DB_USER'];
+    $this->password = $_ENV['MYSQL_DB_PASSWORD'];
   }
 
   /**
    * @return string
    */
   protected function connectionString() : string {
-    return "mysql:dbname=$this->dbname;host:$this->host";
+    return $_ENV['MYSQL_DB_URI'];
   }
 
   /**
