@@ -36,7 +36,7 @@ class MySqlTaskRepository extends MySqlBaseRepository implements TaskRepository 
     $statement = $db->prepare($sql);
     $statement->bindValue(':id', $task->id());
     $statement->bindValue(':description', $task->description());
-    $statement->bindValue(':completed', $task->completed());
+    $statement->bindValue(':completed', (int) $task->completed());
     $statement->execute();
 
     $this->throwExceptionOnFailure($statement);
@@ -100,7 +100,7 @@ class MySqlTaskRepository extends MySqlBaseRepository implements TaskRepository 
     $statement = $db->prepare($sql);
     $statement->bindValue(':id', $task->id());
     $statement->bindValue(':description', $task->description());
-    $statement->bindValue(':completed', $task->completed());  
+    $statement->bindValue(':completed', (int) $task->completed());
     $statement->execute();
 
     $this->throwExceptionOnFailure($statement);
