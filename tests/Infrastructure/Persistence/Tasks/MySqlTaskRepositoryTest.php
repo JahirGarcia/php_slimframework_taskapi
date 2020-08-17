@@ -55,5 +55,16 @@ class MySqlTaskRepositoryTest extends TestCase {
     $taskRepository->findById('Invalid ID');
 
   }
+
+  public function testUpdate() {
+    $defaultTaskStored = $this->defaultTaskStored();
+    $defaultTaskStored->changeDescription('Watch Milan match.');
+    $defaultTaskStored->complete();
+
+    $taskRepository = new MySqlTaskRepository();
+    $task = $taskRepository->update($defaultTaskStored);
+
+    $this->assertEquals($defaultTaskStored, $task);
+  }
   
 }

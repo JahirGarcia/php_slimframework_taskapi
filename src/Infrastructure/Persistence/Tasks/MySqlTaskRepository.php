@@ -76,4 +76,21 @@ class MySqlTaskRepository extends MySqlBaseRepository implements TaskRepository 
     return $task;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function update(Task $task): Task {
+    $db = $this->getConnection();
+    $sql = 'update tasks set description = :description, completed = :completed where id = :id';
+    $statement = $db->prepare($sql);
+    $statement->bindValue(':id', $task->id());
+    $statement->bindValue(':description', $task->description());
+    $statement->bindValue(':completed', $task->completed());  
+    $success = $statement->execute();
+
+    if(!$success) throw new PDOException();
+
+    return $task;
+  }
+
 }

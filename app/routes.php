@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Actions\Tasks\AddTaskAction;
 use App\Application\Actions\Tasks\ListTaskAction;
+use App\Application\Actions\Tasks\UpdateTaskAction;
 use App\Application\Actions\Tasks\ViewTaskAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -26,6 +27,7 @@ return function (App $app) {
       $group->get('', ListTaskAction::class);
       $group->get('/{id}', ViewTaskAction::class);
       $group->post('', AddTaskAction::class);
+      $group->put('/{id}', UpdateTaskAction::class);
     });
   });
 };

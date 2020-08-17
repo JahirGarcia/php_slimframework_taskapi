@@ -26,4 +26,10 @@ interface TaskRepository {
    */
   public function findById(string $id) : Task;
 
+  /**
+   * @param Task $task
+   * @return Task
+   */
+  public function update(Task $task) : Task;
+
 }
