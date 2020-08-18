@@ -12,13 +12,13 @@ use Dotenv\Dotenv;
 require __DIR__ . '/../vendor/autoload.php';
 
 // Environment variables
-$dotenv = Dotenv::createImmutable(__DIR__, '/../dev.env');// Should be change env file in production
+$dotenv = Dotenv::createImmutable(__DIR__, '/../.env');// Should be change env file in production
 $dotenv->load();
 
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
 
-if (false) { // Should be set to true in production
+if (true) { // Should be set to true in production
 	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 }
 
